@@ -1,5 +1,8 @@
+import dotenv from 'dotenv'
+dotenv.config();
 import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
+import replace from 'rollup-plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
@@ -15,6 +18,11 @@ export default {
 		file: 'public/bundle.js'
 	},
 	plugins: [
+		replace({
+			// you're right, you shouldn't be injecting this
+			// into a client script :)
+			GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN
+		}),
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,

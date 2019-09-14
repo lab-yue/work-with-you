@@ -1,43 +1,48 @@
 <script>
-  import Title from "./Title.svelte";
-  import { onMount } from "svelte";
-  import Chart from "chart.js";
+  import { Title, Chart, Input, UserList } from "./components";
+  import api from "./api";
 
-  onMount(() => {
-    const ctx = document.getElementById("chart").getContext("2d");
+  let names = [];
+  let users = [];
 
-    const myChart = new Chart(ctx, {
-      type: "polarArea",
-      data: {
-        labels: ["C++", "Python", "JavaScript", "Shell", "Eilxer", "Kotlin"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)"
-            ],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {}
-    });
-  });
+  async function addOrg(name) {
+    const members = await api.fetchOrgMembers(name);
+    names = [...names, ...members];
+  }
+
+  async function addUser(name) {
+    if (names.includes(name)) return;
+    names = [...names, name];
+  }
+
+  async function fetchAllUser(nameList) {
+    const newAdded = nameList.filter(
+      name => !users.some(user => user.login === name)
+    );
+    if (!newAdded.length) return;
+
+    const newAddedData = await Promise.all(
+      newAdded.map(name => api.fetchUser(name))
+    );
+    users = [...users, ...newAddedData];
+  }
+
+  $: fetchAllUser(names);
 </script>
 
+<style>
+  .flex {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+
 <Title />
-<canvas id="chart" />
+
+<div class="flex">
+  <div>
+    <Input {addUser} />
+    <UserList {users} />
+  </div>
+  <Chart data={users} />
+</div>
