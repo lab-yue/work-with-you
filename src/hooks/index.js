@@ -6,7 +6,7 @@ export function useLanguage() {
 
         if (name in _data) {
             _data[name].size += size / 1000
-            _data[name].count += 1
+            _data[name].count += count
         } else {
             _data[name] = {
                 name,

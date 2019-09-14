@@ -1,5 +1,5 @@
 <script>
-  import { Title, Chart, Input, UserList } from "./components";
+  import { Header, Chart, Input, UserList } from "./components";
   import api from "./api";
 
   let names = [];
@@ -31,18 +31,24 @@
 </script>
 
 <style>
+  main {
+    margin: 2rem;
+  }
   .flex {
     display: flex;
     justify-content: space-between;
   }
+  .panel {
+    width: 40%;
+  }
 </style>
 
-<Title />
+<Header />
 
-<div class="flex">
-  <div>
+<main class="flex">
+  <div class="panel">
     <Input {addUser} />
     <UserList {users} />
   </div>
   <Chart data={users} />
-</div>
+</main>
