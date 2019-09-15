@@ -18,11 +18,11 @@ export default {
 		file: 'public/bundle.js'
 	},
 	plugins: [
-		replace({
-			// you're right, you shouldn't be injecting this
-			// into a client script :)
-			GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN
-		}),
+		//replace({
+		//	 you're right, you shouldn't be injecting this
+		//	 into a client script :)
+		//	GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN
+		//}),
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,

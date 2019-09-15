@@ -58,7 +58,7 @@
             {
               data: sizes,
               backgroundColor: colors,
-              borderColor: colors,
+              borderColor: ["#fff"],
               borderWidth: 1
             }
           ]

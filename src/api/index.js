@@ -1,4 +1,14 @@
 import { useLanguage } from '../hooks'
+import { token } from "../store";
+
+const getToken = () => new Promise((reslove, reject) => {
+  token.subscribe(t => {
+    t
+      ? reslove(t)
+      : reject(t)
+  })
+})
+
 const user = ({ user }) => {
 
   let [language, collect] = useLanguage();
@@ -56,10 +66,11 @@ query {
   }
 }    
 `;
+  const userToken = await getToken();
   const res = await fetch("https://api.github.com/graphql", {
     body: JSON.stringify({ query }),
     headers: {
-      Authorization: `bearer GITHUB_ACCESS_TOKEN`,
+      Authorization: `bearer ${userToken}`,
       "Content-Type": "application/x-www-form-urlencoded"
     },
     method: "POST"
@@ -70,16 +81,19 @@ query {
 }
 
 export async function fetchOrgMembers(name) {
+  const userToken = await getToken();
   const res = await fetch(`https://api.github.com/orgs/${name}/members`, {
     headers: {
-      Authorization: `bearer GITHUB_ACCESS_TOKEN`,
+      Authorization: `bearer ${userToken}`,
       "Content-Type": "application/x-www-form-urlencoded"
     },
   })
   const members = await res.json()
   return members.map(m => m.login)
 }
+
 export default {
   fetchUser,
-  fetchOrgMembers
+  fetchOrgMembers,
+  getToken
 }
