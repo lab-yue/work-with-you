@@ -18,6 +18,7 @@ const user = ({ user }) => {
 
   return {
     name: user.name,
+    url: user.url,
     login: user.login,
     createdAt: user.createdAt,
     avatar: user.avatarUrl,

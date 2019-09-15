@@ -25,7 +25,6 @@
   }
 
   li:hover {
-    transform: translateX(10px);
     box-shadow: 0 0 5px #9e9e9e;
   }
   img {
@@ -54,7 +53,9 @@
 </style>
 
 <li on:click={select} transition:fly={{ x: -200, duration: 500 }}>
-  <img src={user.avatar} alt="" />
+  <a href={user.url} target="_blank" rel="nofollow noopener">
+    <img src={user.avatar} alt="" />
+  </a>
   <span class="user">
 
     <span class="name">{user.name || ' '}</span>

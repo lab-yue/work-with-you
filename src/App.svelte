@@ -15,6 +15,10 @@
     names = [...names, name];
   }
 
+  async function submit(data) {
+    (data.type === "user" ? addUser : addOrg)(data.name);
+  }
+
   async function fetchAllUser(nameList) {
     const newAdded = nameList.filter(
       name => !users.some(user => user.login === name)
@@ -47,7 +51,7 @@
 
 <main class="flex">
   <div class="panel">
-    <Input {addUser} />
+    <Input {submit} />
     <UserList {users} />
   </div>
   <Chart data={users} />
